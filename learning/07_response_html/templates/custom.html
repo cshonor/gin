@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义模板</title>
+</head>
+<body>
+    <h1>技术栈列表</h1>
+    <ul>
+        {{ range .items }}
+        <li>{{ . }}</li>
+        {{ end }}
+    </ul>
+</body>
+</html>
+

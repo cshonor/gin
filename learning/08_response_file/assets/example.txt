@@ -1,0 +1,8 @@
+这是一个示例文件。
+
+Gin 框架文件响应学习示例：
+- Static: 静态目录服务
+- StaticFile: 单个静态文件
+- File: 发送文件
+- FileAttachment: 带自定义文件名的下载
+
