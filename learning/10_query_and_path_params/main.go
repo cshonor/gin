@@ -46,13 +46,19 @@ func main() {
 		})
 	})
 
-	// 4. 获取多个同名查询参数 - QueryArray
+	// 4. QueryArray - 同名参数多个，如 ?tag=a&tag=b
+	// 例: /tags?tag=go&tag=gin&tag=gorm -> tags=["go","gin","gorm"]
 	r.GET("/tags", func(c *gin.Context) {
 		tags := c.QueryArray("tag")
 		c.JSON(http.StatusOK, gin.H{"tags": tags})
 	})
 
-	// 5. 查询参数 Map - QueryMap
+	// 5. QueryMap("filter") - 收集所有 filter[key]=value 形式的参数
+	// "filter" 是约定俗成的命名，这类筛选用的 map 常叫 filter；可改成 search 等
+	// 例: ?filter[name]=张三&filter[age]=25 -> map[name:张三 age:25]
+	/*QueryMap 常用于需要多个可选筛选条件的场景：
+后台管理列表：按状态、类型、部门等筛选，如 ?filter[status]=1&filter[type]=vip
+搜索页面：动态组合多个筛选条件，如 ?filter[keyword]=xx&filter[category]=yy*/
 	r.GET("/filters", func(c *gin.Context) {
 		filters := c.QueryMap("filter")
 		c.JSON(http.StatusOK, gin.H{"filters": filters})
