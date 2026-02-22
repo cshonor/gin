@@ -18,7 +18,11 @@ func main() {
 	// 访问: http://localhost:8080/static/example.txt
 	r.Static("/static", "learning/08_response_file/assets")
 
-	// 2. 文件下载 - 使用 File 方法
+	// 2. 文件下载 - 触发浏览器「另存为」而非直接预览
+	// Content-Disposition: attachment 表示下载；filename 指定保存时的文件名
+	// filepath.Base 从路径中提取文件名，如 /a/b/c.txt -> c.txt
+	// c.File 读取文件并写入响应体
+	/*没有 Content-Disposition: attachment 时，浏览器通常会直接显示（如 txt、pdf），而不是下载。*/
 	r.GET("/download", func(c *gin.Context) {
 		filePath := "learning/08_response_file/assets/example.txt"
 		fileName := filepath.Base(filePath)
