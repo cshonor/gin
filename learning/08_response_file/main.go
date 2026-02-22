@@ -1,5 +1,7 @@
 // 对应视频: 8.响应文件
 // 学习目标: Gin 的文件响应 - 下载、静态文件服务
+//
+// r.Static(URL前缀, 本地目录) - 目录下所有文件可通过 URL 直接访问，如 /static/example.txt
 package main
 
 import (

@@ -1,5 +1,8 @@
 // 对应视频: 9.静态文件
 // 学习目标: Gin 静态文件服务
+//
+// r.Static(URL前缀, 本地目录) - 将整个目录映射为静态资源，如 CSS/JS/图片
+// 例: r.Static("/assets", "./static") 表示 /assets/xxx 访问 ./static/xxx
 package main
 
 import (
