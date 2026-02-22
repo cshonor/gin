@@ -1,9 +1,10 @@
 // 对应视频: 12.表单参数与文件上传
 // 学习目标: 表单数据解析、文件上传
 //
-// c.PostForm("key") - 从 POST 表单 body 取字段，Content-Type 需为 application/x-www-form-urlencoded 或 multipart/form-data
-// 无则返回 ""；有默认值用 c.DefaultPostForm("key", "默认")
-// 对比: c.Query 取 URL ?后的参数，c.PostForm 取 body 里的表单字段
+// c.PostForm("key") - 从表单 body 取字段，无则 ""
+// c.DefaultPostForm("key", "默认") - 无则返回第二个参数
+// c.FormFile("key") - 取上传的文件，返回 *multipart.FileHeader
+// c.SaveUploadedFile(file, dst) - 将上传文件保存到本地路径 dst
 package main
 
 import (
@@ -27,7 +28,7 @@ func main() {
 		})
 	})
 
-	// 2. 表单默认值 - DefaultPostForm
+	// 2. DefaultPostForm - 无 username 时返回 "guest"
 	r.POST("/register", func(c *gin.Context) {
 		username := c.DefaultPostForm("username", "guest")
 		email := c.PostForm("email")
@@ -37,7 +38,7 @@ func main() {
 		})
 	})
 
-	// 3. 单文件上传
+	// 3. FormFile("file") - 取表单里 name="file" 的上传文件
 	r.POST("/upload", func(c *gin.Context) {
 		file, err := c.FormFile("file")
 		if err != nil {
@@ -45,7 +46,7 @@ func main() {
 			return
 		}
 
-		// 保存文件
+		// SaveUploadedFile 将文件写入本地
 		dst := filepath.Join("learning/12_form_and_upload/uploads", file.Filename)
 		if err := c.SaveUploadedFile(file, dst); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "保存失败"})
