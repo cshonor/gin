@@ -1,5 +1,11 @@
 // 对应视频: 5.gin响应-json响应封装
 // 学习目标: Gin 的 JSON 响应及统一响应格式封装
+//
+// c.JSON 是 Gin 框架提供的方法，非 Go 标准库
+// c.JSON(200, obj) 将 obj 序列化为 JSON 返回，自动设置 Content-Type
+// Gin 内部用的是标准库 encoding/json（如 json.Marshal）
+//
+// gin.H 是 map[string]any，用于快速构造 JSON 对象，如 gin.H{"name":"张三"}
 package main
 
 import (
@@ -36,10 +42,10 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/user", func(c *gin.Context) {
-		// 方式1: 直接返回 JSON
+		// 方式1: c.JSON 直接传 gin.H
 		// c.JSON(200, gin.H{"name": "张三", "age": 25})
 
-		// 方式2: 使用封装的成功响应
+		// 方式2: 封装后 Success 内部调用 c.JSON，Data 用 gin.H
 		Success(c, gin.H{
 			"id":   1,
 			"name": "张三",
