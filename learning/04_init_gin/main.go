@@ -13,7 +13,11 @@ import (
 )
 
 func main() {
-	// 创建一个默认的 Gin 引擎（包含 Logger 和 Recovery 中间件）
+	// gin.SetMode 设置运行模式，需在 gin.Default() 之前调用
+	// gin.DebugMode(默认) / gin.ReleaseMode(生产) / gin.TestMode(测试)
+	// 生产环境用 ReleaseMode 可减少日志输出、提升性能
+	// gin.SetMode(gin.ReleaseMode)
+
 	r := gin.Default()
 
 	// 注册路由: GET 请求
