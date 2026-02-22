@@ -26,7 +26,8 @@ func main() {
 	// 注册路由: 路径 -> 处理函数
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/hello", helloHandler)
-	http.HandleFunc("/echo", echoHandler) // 演示读取请求体
+	http.HandleFunc("/echo", echoHandler)   // 演示读取请求体
+	http.HandleFunc("/info", infoHandler)   // 演示请求头、w.Write
 
 	// 启动 HTTP 服务器，监听 8080 端口
 	fmt.Println("服务器启动在 http://localhost:8080")
@@ -53,6 +54,19 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		fmt.Fprintf(w, "请用 POST 发送数据\n")
 	}
+}
+
+// 处理 /info：演示 r.Header、w.Write
+// r.Header 是 map[string][]string，可获取 Content-Type、User-Agent 等
+// w.Write([]byte) 是底层写入方法，Fprintf 内部也是调它；Write([]byte("")) 表示空响应体
+func infoHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.Method, r.URL.String())
+	if r.Method != "GET" {
+		byteData, _ := io.ReadAll(r.Body)
+		fmt.Println(string(byteData))
+	}
+	fmt.Println(r.Header)          // 打印请求头到控制台
+	w.Write([]byte("ok"))          // 直接写入响应体，等价于 fmt.Fprintf(w, "ok")
 }
 
 // 处理 /hello 路径请求
