@@ -2,6 +2,7 @@
 // 学习目标: Gin 的 JSON 响应及统一响应格式封装
 //
 // c.JSON 是 Gin 框架提供的方法，非 Go 标准库
+// ShouldBindJSON 将请求体 JSON 解析并绑定到结构体，同时执行 binding 校验，失败返回 error
 // c.JSON(200, obj) 将 obj 序列化为 JSON 返回，自动设置 Content-Type
 // Gin 内部用的是标准库 encoding/json（如 json.Marshal）
 //
@@ -59,6 +60,10 @@ func main() {
 
 	// 绑定 JSON 到结构体
 	r.POST("/user", func(c *gin.Context) {
+		// 匿名结构体：不单独定义类型，直接 var x struct{...}
+		// json:"name"  - 反序列化时从 JSON 的 "name" 字段取值
+		// binding:"required" - Gin 校验，Name 必填，为空则 ShouldBindJSON 返回错误
+		/*c.ShouldBindJSON(&user) 是 Gin 的方法，主要做两件事： 1. 解析：把请求体里的 JSON 解析并写入 user 结构体*/
 		var user struct {
 			Name string `json:"name" binding:"required"`
 			Age  int    `json:"age"`
