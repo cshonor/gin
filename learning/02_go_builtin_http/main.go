@@ -6,6 +6,8 @@
 // Fprintf(w, ...): 输出到指定的 io.Writer，如 w(HTTP响应体)、文件等
 // 这里必须用 Fprintf(w, ...)，否则内容只会打到服务器控制台，客户端收不到
 //
+// 实际开发中: HTTP 响应多用 json.Encode / c.JSON 返回 JSON；Fprintf 常用于写文件、缓冲区
+//
 // --- if err := xxx; err != nil 是什么写法？---
 // Go 的 if 前置语句：if 前置语句; 条件 { }
 // 1. 前置语句: err := ListenAndServe(...)  先执行，ListenAndServe 阻塞，只有出错才返回
