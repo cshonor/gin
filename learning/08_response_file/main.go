@@ -1,7 +1,11 @@
 // 对应视频: 8.响应文件
 // 学习目标: Gin 的文件响应 - 下载、静态文件服务
 //
-// r.Static(URL前缀, 本地目录) - 目录下所有文件可通过 URL 直接访问，如 /static/example.txt
+// r.Static(URL前缀, 本地目录) - 目录下所有文件可通过 URL 直接访问
+//
+// c.File vs c.FileAttachment 区别:
+//   c.File(path)                - 浏览器优先预览（图片/PDF 等），不触发下载
+//   c.FileAttachment(path, name) - 强制触发下载，作为附件保存；第二个参数为下载时显示的文件名
 package main
 
 import (
@@ -37,7 +41,8 @@ func main() {
 		c.File(filePath)
 	})
 
-	// 4. FileAttachment - 带自定义文件名的下载
+	// 4. FileAttachment - 一步完成：设 Content-Disposition + 发送文件
+	// 参数1: 本地文件路径  参数2: 客户端下载时显示的文件名，传空则用原文件名
 	r.GET("/read", func(c *gin.Context) {
 		c.FileAttachment("learning/08_response_file/assets/example.txt", "下载文件.txt")
 	})
