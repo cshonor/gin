@@ -1,9 +1,28 @@
 // 对应视频: 4.初始gin框架
 // 学习目标: 掌握 Gin 框架的基本初始化和路由注册
 //
-// c.String(200, "文本")  - 返回纯文本，Content-Type: text/plain
-// c.JSON(200, obj)      - 返回 JSON，自动设置 Content-Type 并序列化结构体/map
-// gin.H 是 map[string]any 的简写，用于快速构建 JSON 对象，如 gin.H{"code":0,"msg":"ok"}
+// c.String vs c.JSON 区别:
+//   c.String(200, "文本")  - 原样输出，Content-Type: text/plain，适合纯文本
+//   c.JSON(200, obj)      - 序列化 obj 为 JSON 再输出，Content-Type: application/json，适合 API
+//
+// c.JSON vs json.Marshal 区别:
+//   c.JSON  - Gin 封装，一步完成序列化+写响应+设 Content-Type
+//   json.Marshal - 标准库，只序列化得 []byte，需手动 w.Write、设 Header
+//
+// gin.H 与 c.JSON 配合使用: gin.H 是数据，c.JSON 负责序列化并返回
+// gin.H = map[string]any，可嵌套。c.JSON 的 obj 也可以是结构体、普通 map
+
+/*
+gin.H：本质是 map[string]interface{} 的别名，
+是 Gin 框架提供的便捷工具，
+用来快速构造键值对形式的 JSON 数据结构（数据载体）。
+
+c.JSON：Gin 上下文（Context）的方法，
+作用是设置 HTTP 响应头（Content-Type 为 application/json），
+并将传入的数据序列化为 JSON 字符串返回给客户端。
+
+*/
+
 package main
 
 import (
