@@ -1,5 +1,9 @@
 // 对应视频: 12.表单参数与文件上传
 // 学习目标: 表单数据解析、文件上传
+//
+// c.PostForm("key") - 从 POST 表单 body 取字段，Content-Type 需为 application/x-www-form-urlencoded 或 multipart/form-data
+// 无则返回 ""；有默认值用 c.DefaultPostForm("key", "默认")
+// 对比: c.Query 取 URL ?后的参数，c.PostForm 取 body 里的表单字段
 package main
 
 import (
@@ -13,7 +17,7 @@ import (
 func main() {
 	r := gin.Default()
 
-	// 1. 表单参数 - PostForm
+	// 1. PostForm - 从表单 body 取 username、password
 	r.POST("/login", func(c *gin.Context) {
 		username := c.PostForm("username")
 		password := c.PostForm("password")

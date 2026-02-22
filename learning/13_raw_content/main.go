@@ -1,5 +1,9 @@
 // 对应视频: 13.原始内容
 // 学习目标: 获取请求原始 Body、Request 对象
+//
+// io.ReadAll(r) - 从 io.Reader 读取全部内容直到 EOF，返回 ([]byte, error)
+// c.Request.Body 实现了 io.Reader，ReadAll 一次读完整请求体
+// 注意: 读完后 Body 被消费，无法再次读取；大请求体会占用内存
 package main
 
 import (
@@ -12,9 +16,9 @@ import (
 func main() {
 	r := gin.Default()
 
-	// 1. 获取原始 Body - c.Request.Body
+	// 1. 获取原始 Body
 	r.POST("/raw", func(c *gin.Context) {
-		body, err := io.ReadAll(c.Request.Body)
+		body, err := io.ReadAll(c.Request.Body) // 一次性读完整 body
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
