@@ -9,6 +9,7 @@
 | 03_acl | 3.ACL访问控制 | 主体对资源直接授权 |
 | 04_rbac | 4.RBAC访问控制 | 用户->角色->权限 |
 | 05_gorm_adapter | 5.gorm接入casbin | 策略持久化到数据库 |
+| 06_gin_integration | Casbin+Gin 配合 | 中间件校验权限，Header X-User 传用户 |
 
 ## 运行
 
@@ -18,6 +19,20 @@ go run ./learning/casbin/02_config
 go run ./learning/casbin/03_acl
 go run ./learning/casbin/04_rbac
 go run ./learning/casbin/05_gorm_adapter
+go run ./learning/casbin/06_gin_integration
+```
+
+### 06 测试
+```bash
+# 无权限
+curl http://localhost:8080/api/users
+
+# alice(admin) 有权限
+curl -H "X-User: alice" http://localhost:8080/api/users
+
+# bob(user) 只能 GET
+curl -H "X-User: bob" http://localhost:8080/api/users
+curl -H "X-User: bob" -X POST http://localhost:8080/api/users  # 403
 ```
 
 ## 依赖
