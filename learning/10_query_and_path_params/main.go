@@ -33,8 +33,10 @@ func main() {
 
 	// 3. 查询参数 - Query
 	r.GET("/search", func(c *gin.Context) {
-		keyword := c.Query("keyword")           // 必取，无则空
-		page := c.DefaultQuery("page", "1")     // 默认值
+		// Query 无则返回 ""（空字符串），Go 的 string 不能为 nil
+		// DefaultQuery 无则返回第二个参数
+		keyword := c.Query("keyword")           // ?keyword=xxx，无则 ""
+		page := c.DefaultQuery("page", "1")     // ?page=2，无则 "1"
 		size := c.DefaultQuery("page_size", "10")
 
 		c.JSON(http.StatusOK, gin.H{
