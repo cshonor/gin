@@ -42,6 +42,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 // 处理 /echo：演示读取请求体（POST/PUT 等）
 // io.ReadAll(r.Body) 读取整个 body，读完后 Body 会被消费，无法再次读取
 func echoHandler(w http.ResponseWriter, r *http.Request) {
+	// 打印到控制台: 请求方法(GET/POST等) + 完整URL路径
 	fmt.Println(r.Method, r.URL.String())
 	if r.Method != "GET" {
 		byteData, _ := io.ReadAll(r.Body)
