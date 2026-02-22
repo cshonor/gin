@@ -16,6 +16,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -23,6 +24,7 @@ func main() {
 	// 注册路由: 路径 -> 处理函数
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/hello", helloHandler)
+	http.HandleFunc("/echo", echoHandler) // 演示读取请求体
 
 	// 启动 HTTP 服务器，监听 8080 端口
 	fmt.Println("服务器启动在 http://localhost:8080")
@@ -35,6 +37,19 @@ func main() {
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "欢迎！你访问的是: %s\n", r.URL.Path)
 	fmt.Fprintf(w, "请求方法: %s\n", r.Method)
+}
+
+// 处理 /echo：演示读取请求体（POST/PUT 等）
+// io.ReadAll(r.Body) 读取整个 body，读完后 Body 会被消费，无法再次读取
+func echoHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.Method, r.URL.String())
+	if r.Method != "GET" {
+		byteData, _ := io.ReadAll(r.Body)
+		fmt.Println(string(byteData))
+		fmt.Fprintf(w, "收到: %s\n", string(byteData))
+	} else {
+		fmt.Fprintf(w, "请用 POST 发送数据\n")
+	}
 }
 
 // 处理 /hello 路径请求
