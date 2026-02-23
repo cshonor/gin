@@ -11,6 +11,7 @@ import (
 )
 
 // FieldError 单个字段错误
+// json:"value,omitempty" - omitempty：值为零值(空串/0/nil)时，序列化时省略该字段，不输出到 JSON
 type FieldError struct {
 	Field   string `json:"field"`
 	Message string `json:"message"`
