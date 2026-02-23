@@ -1,5 +1,9 @@
 // 对应视频: 20.路由
 // 学习目标: Gin 路由组、路由匹配、Any、NoRoute 等
+//
+// r.Group("/api/v1") - 路由分组，返回 *gin.RouterGroup
+// 挂到分组上的路由自动带前缀，如 v1.GET("/users") 实际路径为 /api/v1/users
+// 分组可加中间件: r.Group("/api/v1", AuthMiddleware()) 该组下所有接口先执行鉴权
 package main
 
 import (
@@ -11,7 +15,7 @@ import (
 func main() {
 	r := gin.Default()
 
-	// 1. 路由组 - 统一前缀
+	// 1. 路由组 - 统一前缀，实际路径 /api/v1/users、/api/v1/users/:id
 	v1 := r.Group("/api/v1")
 	{
 		v1.GET("/users", func(c *gin.Context) { c.String(200, "用户列表") })
