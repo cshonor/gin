@@ -8,12 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// QueryParams 查询参数绑定
+// QueryParams 查询参数绑定结构体
+// form:"keyword" 表示 URL 里 ?keyword=xxx 会赋给 Keyword 字段
+// 类型会自动转换: page=2 -> int, 无则零值(string="", int=0)
 type QueryParams struct {
-	Keyword string `form:"keyword"`
-	Page    int    `form:"page"`
-	PageSize int   `form:"page_size"`
-	Sort    string `form:"sort"`
+	Keyword  string `form:"keyword"`
+	Page     int    `form:"page"`
+	PageSize int    `form:"page_size"`
+	Sort     string `form:"sort"`
 }
 
 // PathParams 路径参数绑定
@@ -32,14 +34,14 @@ type PaginationQuery struct {
 func main() {
 	r := gin.Default()
 
-	// 1. ShouldBindQuery - 绑定查询参数
+	// 1. ShouldBindQuery - 将 ?keyword=xx&page=2 自动绑定到结构体
+	// 例: /search?keyword=gin&page=2&page_size=20 -> params={Keyword:"gin", Page:2, PageSize:20}
 	r.GET("/search", func(c *gin.Context) {
 		var params QueryParams
 		if err := c.ShouldBindQuery(&params); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		// 设置默认值
 		if params.Page == 0 {
 			params.Page = 1
 		}
