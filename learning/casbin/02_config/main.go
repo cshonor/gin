@@ -1,5 +1,5 @@
 // 对应视频: 2.casbin配置文件
-// 从 model.conf 和 policy.csv 加载，配置文件定义权限模型和初始策略
+// model.conf = 模型（如何判断权限）；policy.csv = 策略数据（谁对什么有什么操作）
 package main
 
 import (
