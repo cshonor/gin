@@ -1,5 +1,8 @@
 // 对应视频: 15.binding参数-json参数和header参数
 // 学习目标: ShouldBindJSON、Header 绑定
+//
+// ShouldBindXXX 做两件事: 1) 解析并绑定到结构体  2) 按 binding 标签校验，失败返回 err
+// 不是单纯的「检测」，而是解析+校验一体
 package main
 
 import (
@@ -35,19 +38,20 @@ type ApiRequest struct {
 func main() {
 	r := gin.Default()
 
-	// 1. ShouldBindJSON - 绑定 JSON 请求体
+	// 1. ShouldBindJSON 反序列化请求体 -> req；c.JSON 序列化 req -> 响应
+	// json 标签: 前者从 JSON 取值(反序列化)，后者把字段输出为 "username"(序列化)
 	r.POST("/user", func(c *gin.Context) {
 		var req CreateUserRequest
 		if err := c.ShouldBindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "参数错误",
+				"error":  "参数错误",
 				"detail": err.Error(),
 			})
 			return
 		}
 		c.JSON(http.StatusCreated, gin.H{
 			"message": "创建成功",
-			"data":    req,
+			"data":    req, // req 序列化时 Username -> "username"
 		})
 	})
 
