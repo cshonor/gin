@@ -42,7 +42,7 @@ func Auth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		c.Set("user_id", token)
+		c.Set("user_id", token) // 将 token 存储到上下文中，供后续使用，如 private.GET("/profile", func(c *gin.Context) { uid, _ := c.Get("user_id"); c.JSON(200, gin.H{"user_id": uid}) })
 		c.Next()
 	}
 }
