@@ -72,7 +72,7 @@ func main() {
 	r.POST("/api/request", func(c *gin.Context) {
 		var header ApiRequest
 		var body CreateUserRequest
-		c.ShouldBindHeader(&header)
+		c.ShouldBindHeader(&header) // 将 X-Trace-Id 等 Header 绑定到 header，err 忽略因 TraceID 可选
 		if err := c.ShouldBindJSON(&body); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
