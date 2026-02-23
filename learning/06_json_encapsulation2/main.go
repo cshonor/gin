@@ -1,5 +1,8 @@
 // 对应视频: 6.gin响应json-响应封装2
-// 学习目标: 更完善的响应封装，支持泛型、分页等
+// 学习目标: 更完善的响应封装，支持分页等
+//
+// 序列化: Result 内部调用 c.JSON，Gin 将 Response 结构体序列化为 JSON 返回
+// 例: Result(c,200,"success",data) -> {"code":200,"message":"success","data":{...}}
 package main
 
 import (
@@ -23,7 +26,7 @@ type PageData struct {
 	PageSize int         `json:"page_size"`
 }
 
-// Result 响应工具
+// Result 统一响应，c.JSON 将 Response 序列化为 JSON 写入响应体
 func Result(c *gin.Context, code int, message string, data interface{}) {
 	c.JSON(http.StatusOK, Response{
 		Code:    code,
