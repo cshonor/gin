@@ -18,11 +18,15 @@ func main() {
 	modelPath := filepath.Join("learning", "casbin", "02_config", "model.conf")
 	policyPath := filepath.Join("learning", "casbin", "02_config", "policy.csv")
 
+	// casbin.NewEnforcer 初始化权限执行器
+	// modelPath: 模型文件(.conf)，定义权限规则结构(RBAC/ACL、matcher 等)
+	// policyPath: 策略文件(.csv)，定义具体权限(谁对什么有什么操作)
 	e, err := casbin.NewEnforcer(modelPath, policyPath)
 	if err != nil {
 		panic(err)
 	}
 
+	// e.Enforce(sub, obj, act) 检查是否有权限，返回 (bool, error)
 	ok, _ := e.Enforce("admin", "data1", "write")
 	fmt.Println("admin write data1:", ok) // true
 
