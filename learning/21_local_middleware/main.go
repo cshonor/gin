@@ -22,11 +22,11 @@ func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) { // 匿名函数类型 = gin.HandlerFunc
 		start := time.Now()
 		path := c.Request.URL.Path
-		clientIP := c.ClientIP()
+		clientIP := c.ClientIP()      // 获取客户端 IP，会考虑 X-Forwarded-For 等代理头
 		method := c.Request.Method
 		c.Next()
-		latency := time.Since(start)
-		statusCode := c.Writer.Status()
+		latency := time.Since(start)  // 计算从 start 到现在的耗时
+		statusCode := c.Writer.Status() // 响应状态码，如 200、404
 		fmt.Printf("[%s] %d | %13v | %15s | %-7s %s\n",
 			time.Now().Format("2006/01/02 15:04:05"),
 			statusCode, latency, clientIP, method, path,
@@ -36,7 +36,7 @@ func Logger() gin.HandlerFunc {
 
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("X-Token")
+		token := c.GetHeader("X-Token") // 获取请求头 X-Token，无则返回 ""
 		if token == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "需要登录"})
 			c.Abort()
