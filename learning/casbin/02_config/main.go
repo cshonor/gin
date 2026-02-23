@@ -1,5 +1,5 @@
 // 对应视频: 2.casbin配置文件
-// model.conf = 模型（如何判断权限）；policy.csv = 策略数据（谁对什么有什么操作）
+// model.conf = 模型；policy.csv = 策略数据。使用 GORM 适配器后策略存库，不再用 csv
 package main
 
 import (
