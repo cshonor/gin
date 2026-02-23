@@ -1,5 +1,7 @@
 // 对应视频: 22.全局中间件
 // 学习目标: 全局中间件、gin.Default() 内置中间件、自定义全局中间件
+//
+// c.Next() - 把控制权交给下一个 handler；Next() 之后的代码在后续 handler 返回后再执行（洋葱模型）
 package main
 
 import (
@@ -44,7 +46,7 @@ func RequestID() gin.HandlerFunc {
 		}
 		c.Set("request_id", requestID)
 		c.Header("X-Request-ID", requestID)
-		c.Next()
+		c.Next() // 把控制权交给下一个中间件/路由；不调则请求在此结束，不会到达后续逻辑
 	}
 }
 
@@ -57,7 +59,7 @@ func Recovery() gin.HandlerFunc {
 					"error": "服务器内部错误",
 					"msg":   fmt.Sprintf("%v", err),
 				})
-				c.Abort()
+				c.Abort() // 终止后续 handler，防止重复写响应；recover 后已返回错误，不再继续链路
 			}
 		}()
 		c.Next()
