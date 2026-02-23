@@ -10,7 +10,11 @@ import (
 )
 
 func main() {
-	// 从配置文件加载，路径相对于运行目录
+	// filepath.Join 将多个路径片段拼接成符合当前系统的完整路径
+	// 例: Join("user","docs","report.txt") -> user/docs/report.txt (Linux) 或 user\docs\report.txt (Win)
+	// 自动去重: Join("data//","logs/","app.log") -> data/logs/app.log
+	// 路径简化: Join("a","b","..","c",".","d.txt") -> a/c/d.txt
+	// 路径相对于运行目录(项目根)
 	modelPath := filepath.Join("learning", "casbin", "02_config", "model.conf")
 	policyPath := filepath.Join("learning", "casbin", "02_config", "policy.csv")
 
