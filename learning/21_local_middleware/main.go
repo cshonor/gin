@@ -54,7 +54,6 @@ func main() {
 	r.GET("/public", func(c *gin.Context) {
 		c.String(200, "公开接口")
 	})
-
 	// 单路由使用中间件
 	r.GET("/with-logger", Logger(), func(c *gin.Context) {
 		c.String(200, "带日志的路由")

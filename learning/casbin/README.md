@@ -10,6 +10,7 @@
 | 04_rbac | 4.RBAC访问控制 | 用户->角色->权限 |
 | 05_gorm_adapter | 5.gorm接入casbin | 策略持久化到数据库 |
 | 06_gin_integration | Casbin+Gin 配合 | 中间件校验权限，Header X-User 传用户 |
+| 07_abac | ABAC 访问控制 | 基于属性的权限，sub/obj 传结构体，matcher 用 r.sub.xxx |
 
 ## 运行
 
@@ -20,6 +21,7 @@ go run ./learning/casbin/03_acl
 go run ./learning/casbin/04_rbac
 go run ./learning/casbin/05_gorm_adapter
 go run ./learning/casbin/06_gin_integration
+go run ./learning/casbin/07_abac
 ```
 
 ### 06 测试
