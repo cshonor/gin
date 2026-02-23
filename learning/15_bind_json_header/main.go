@@ -8,20 +8,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// JSON 请求体
+// CreateUserRequest - 用于 ShouldBindJSON，绑定请求体 JSON
+// json:"username" 双向: 反序列化时从 JSON 的 "username" 取值；序列化时结构体字段输出为 "username"
+/*json:"username" 是双向的，既管序列化也管反序列化：
+反序列化（JSON → 结构体）：ShouldBindJSON 从 JSON 里找 "username"，赋给 Username
+序列化（结构体 → JSON）：c.JSON(200, req) 会把 Username 输出成 "username"*/
+// binding:"required" 必填；email 邮箱格式；gte=0,lte=120 年龄 0-120
 type CreateUserRequest struct {
 	Username string `json:"username" binding:"required"`
 	Email    string `json:"email" binding:"required,email"`
 	Age      int    `json:"age" binding:"gte=0,lte=120"`
 }
 
-// Header 绑定
+// AuthHeader - 用于 ShouldBindHeader，绑定请求头
+// header:"Authorization" 从 Header 的 Authorization 取值
 type AuthHeader struct {
 	Authorization string `header:"Authorization" binding:"required"`
 	Token         string `header:"X-Token"`
 }
 
-// 组合 JSON + Header
+// ApiRequest - Header 绑定，X-Trace-Id 用于链路追踪
 type ApiRequest struct {
 	TraceID string `header:"X-Trace-Id"`
 }
