@@ -86,7 +86,7 @@ func main() {
 		name := c.PostForm("name")
 		file, _ := c.FormFile("avatar")
 
-		// fmt.Sprintf 格式化字符串，%s 被 name 替换，返回 string 不打印
+		// fmt.Sprintf: 模板中的 %s 用后面的 name 替换，得到新字符串赋给 msg，不会输出到控制台
 		msg := fmt.Sprintf("用户 %s 提交了资料", name)
 		if file != nil {
 			dst := filepath.Join("learning/12_form_and_upload/uploads", file.Filename)
