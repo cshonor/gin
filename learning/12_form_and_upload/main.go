@@ -61,10 +61,13 @@ func main() {
 	})
 
 	// 4. 多文件上传
+	// c.MultipartForm() 解析 multipart/form-data，返回 *multipart.Form
+	// form.File 存文件，form.Value 存普通表单字段
 	r.POST("/uploads", func(c *gin.Context) {
 		form, _ := c.MultipartForm()
-		files := form.File["files"]
+		files := form.File["files"] // 对应 <input name="files" type="file" multiple>
 
+		// form.File["files"] 是多个 name="files" 的上传文件
 		var filenames []string
 		for _, file := range files {
 			dst := filepath.Join("learning/12_form_and_upload/uploads", file.Filename)
@@ -83,6 +86,7 @@ func main() {
 		name := c.PostForm("name")
 		file, _ := c.FormFile("avatar")
 
+		// fmt.Sprintf 格式化字符串，%s 被 name 替换，返回 string 不打印
 		msg := fmt.Sprintf("用户 %s 提交了资料", name)
 		if file != nil {
 			dst := filepath.Join("learning/12_form_and_upload/uploads", file.Filename)
