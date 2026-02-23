@@ -10,17 +10,22 @@ import (
 )
 
 func main() {
-	// 使用内置模型和内存适配器，适合快速体验
+	// NewEnforcer() 无参时: 使用内置 ACL 模型 + 内存适配器
+	// 策略初始为空，没有默认策略，需通过 AddPolicy 手动添加
 	e, err := casbin.NewEnforcer()
 	if err != nil {
 		panic(err)
 	}
 
-	// 添加策略: 用户 alice 可以对 data1 进行 read
+	// e.AddPolicy(sub, obj, act) - 添加一条策略
+	// sub: subject 主体，如用户 alice
+	// obj: object 客体/资源，如 data1、/api/user、订单等，不是前端 CSS/JS 资源
+	// act: action 操作，如 read、write
 	e.AddPolicy("alice", "data1", "read")
 	e.AddPolicy("bob", "data2", "write")
 
-	// 检查权限: Enforce(sub, obj, act)
+	// e.Enforce(sub, obj, act) - 检查 (sub, obj, act) 是否在策略中，返回 (allowed bool, err error)
+	// true=有权限，false=无权限
 	ok, _ := e.Enforce("alice", "data1", "read")
 	fmt.Println("alice read data1:", ok) // true
 
